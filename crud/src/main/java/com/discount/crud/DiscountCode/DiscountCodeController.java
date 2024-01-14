@@ -1,8 +1,11 @@
 package com.discount.crud.DiscountCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +42,20 @@ public class DiscountCodeController {
             @RequestParam(required = false) String webSite,
             @RequestParam(required = false) String siteType,
             @RequestParam(required = false) String creator,
-            @RequestParam(required = false) Date expirationDate
+                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String expirationDate
             ){
-        return discountCodeService.updateDiscountCode(discountID, code, description, webSite, siteType, creator, expirationDate);
+        Date eD = null;
+
+        if (expirationDate != null && !expirationDate.isEmpty()) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                eD = dateFormat.parse(expirationDate);
+            } catch (ParseException e) {
+                // Handle parsing exception
+                e.printStackTrace();
+                // You might want to throw an exception or set a default value for expirationDate
+            }
+        }
+        return discountCodeService.updateDiscountCode(discountID, code, description, webSite, siteType, creator, eD);
     }
 }

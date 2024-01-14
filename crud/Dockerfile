@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-sdo
+FROM openjdk:17-jdk-slim-buster
 ARG JAR_FILE=target/*.jar
 COPY ./target/crud-0.0.1-SNAPSHOT.jar app.jar
 
