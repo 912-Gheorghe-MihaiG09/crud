@@ -19,18 +19,19 @@ public class DiscountCodeController {
         this.discountCodeService = discountCodeService;
     }
 
-    @GetMapping()
-    List<DiscountCode> getDiscountCodes(){
-        return discountCodeService.getDiscountCodes();
+    @GetMapping
+    List<DiscountCode> getDiscountCodes(@RequestParam(name = "sort", defaultValue = "false", required = false) boolean sort,
+                                        @RequestParam(name = "filter", defaultValue = "false", required = false) boolean filter) {
+        return discountCodeService.getDiscountCodes(sort, filter);
     }
 
     @PostMapping
-    public DiscountCode addDiscountCode(@RequestBody DiscountCode code){
+    public DiscountCode addDiscountCode(@RequestBody DiscountCode code) {
         return discountCodeService.addDiscountCode(code);
     }
 
     @DeleteMapping(path = "/{discountCodeId}")
-    public void deleteDiscountCode(@PathVariable("discountCodeId") Long discountID){
+    public void deleteDiscountCode(@PathVariable("discountCodeId") Long discountID) {
         discountCodeService.deleteDiscountCode(discountID);
     }
 
@@ -42,8 +43,8 @@ public class DiscountCodeController {
             @RequestParam(required = false) String webSite,
             @RequestParam(required = false) String siteType,
             @RequestParam(required = false) String creator,
-                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String expirationDate
-            ){
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String expirationDate
+    ) {
         Date eD = null;
 
         if (expirationDate != null && !expirationDate.isEmpty()) {

@@ -1,15 +1,17 @@
-# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-version: '3.8'
 services:
   core-postgresql:
-    image: postgres:14.2
-    # volumes:
-    #   - ~/volumes/jhipster/core/postgresql/:/var/lib/postgresql/data/
+    image: postgres:latest
     environment:
-      - POSTGRES_USER=core
-      - POSTGRES_PASSWORD=
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
+      - POSTGRES_DB=discount_code
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=pass1234
     ports:
-      - 127.0.0.1:5432:5432
+      - '5432:5432'
+  pg-admin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@localhost.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - '5050:5050'

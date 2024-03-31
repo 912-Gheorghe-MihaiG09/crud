@@ -3,11 +3,14 @@ package com.discount.crud.DiscountCode;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@CrossOrigin(maxAge = 3600)
 @Service
 public class DiscountCodeService {
     final DiscountCodeRepository discountCodeRepository;
@@ -17,8 +20,17 @@ public class DiscountCodeService {
         this.discountCodeRepository = discountCodeRepository;
     }
 
-    public List<DiscountCode> getDiscountCodes(){
-        return discountCodeRepository.findAll();
+    public List<DiscountCode> getDiscountCodes(boolean sort, boolean filter){
+        List<DiscountCode> initialList;
+        if(filter)
+            initialList = this.discountCodeRepository.findByExpirationDateGreaterThan(new Date());
+        else
+            initialList = this.discountCodeRepository.findAll();
+        if(sort)
+            initialList.sort(
+                    Comparator.comparing(DiscountCode::getExpirationDate)
+            );
+        return initialList;
     }
 
     public DiscountCode addDiscountCode(DiscountCode code){
