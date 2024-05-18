@@ -2,6 +2,8 @@ package com.discount.crud;
 
 import com.discount.crud.DiscountCode.DiscountCode;
 import com.discount.crud.DiscountCode.InMemoryDiscountCodeRepository;
+import com.discount.crud.User.User;
+import com.discount.crud.User.auth.RegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.discount.crud.User.Role.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -36,8 +39,15 @@ public class InMemoryDiscountCodeRepositoryTest {
 
     @Test
     public void testFindAll() {
-        DiscountCode code1 = new DiscountCode("CODE1", "Description 1", "website1.com", "type1", new Date(), "User1");
-        DiscountCode code2 = new DiscountCode("CODE2", "Description 2", "website2.com", "type2", new Date(), "User2");
+        User user1 = User.builder()
+                .firstname("test")
+                .lastname("test")
+                .email("test@test.com")
+                .password("password")
+                .role(USER)
+                .build();
+        DiscountCode code1 = new DiscountCode(1L, "CODE1", "Description 1", "website1.com", "type1", new Date(), user1);
+        DiscountCode code2 = new DiscountCode(2L, "Code2", "Description 2", "website2.com", "type2", new Date(), user1);
         discountCodeRepository.save(code1);
         discountCodeRepository.save(code2);
         List<DiscountCode> allDiscountCodes = discountCodeRepository.findAll();
@@ -46,10 +56,17 @@ public class InMemoryDiscountCodeRepositoryTest {
 
     @Test
     public void testFindByExpirationDateGreaterThan() {
+        User user1 = User.builder()
+                .firstname("test")
+                .lastname("test")
+                .email("test@test.com")
+                .password("password")
+                .role(USER)
+                .build();
         Date currentDate = new Date();
         Date futureDate = new Date(currentDate.getTime() + 86400000); // Adding one day (in milliseconds)
-        DiscountCode code1 = new DiscountCode("CODE1", "Description 1", "website1.com", "type1", currentDate, "User1");
-        DiscountCode code2 = new DiscountCode("CODE2", "Description 2", "website2.com", "type2", futureDate, "User2");
+        DiscountCode code1 = new DiscountCode(1L,"CODE1", "Description 1", "website1.com", "type1", currentDate, user1);
+        DiscountCode code2 = new DiscountCode(2L,"CODE2", "Description 2", "website2.com", "type2", futureDate, user1);
         discountCodeRepository.save(code1);
         discountCodeRepository.save(code2);
         List<DiscountCode> filteredCodes = discountCodeRepository.findByExpirationDateGreaterThan(currentDate);
