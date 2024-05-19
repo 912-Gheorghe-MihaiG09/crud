@@ -26,7 +26,7 @@ public class CrudApplication {
                     .firstname("Admin")
                     .lastname("Admin")
                     .email("admin@mail.com")
-                    .password("password")
+                    .password("parola@123")
                     .role(ADMIN)
                     .build();
             System.out.println("Admin token: " + service.register(admin).getAccessToken());
@@ -35,7 +35,7 @@ public class CrudApplication {
                     .firstname("Admin")
                     .lastname("Admin")
                     .email("manager@mail.com")
-                    .password("password")
+                    .password("Parola@123")
                     .role(USER)
                     .build();
             System.out.println("User token: " + service.register(user).getAccessToken());

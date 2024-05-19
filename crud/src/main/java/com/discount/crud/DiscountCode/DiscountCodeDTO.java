@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Data
 public class DiscountCodeDTO {
+    private Long id;
     private String code;
     private String description;
     private String webSite;
@@ -17,6 +18,7 @@ public class DiscountCodeDTO {
 
     public static DiscountCodeDTO fromDiscountCode(DiscountCode discountCode) {
         DiscountCodeDTO dto = new DiscountCodeDTO();
+        dto.setId(discountCode.getId());
         dto.setCode(discountCode.getCode());
         dto.setDescription(discountCode.getDescription());
         dto.setWebSite(discountCode.getWebSite());
